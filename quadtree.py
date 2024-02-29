@@ -23,26 +23,37 @@ class Rectangle:
                    range.x + range.w < self.x - self.w or
                    range.y - range.h > self.y + self.h or
                    range.y + range.h < self.y - self.h)
-    def draw(self, canvas, depth, mass):
+    def draw(self, canvas, depth, mass, com):
         canvas.create_rectangle(self.x-self.w,self.y-self.h, self.x+self.w, self.y+self.h, outline = 'white' , width = 1)
-        canvas.create_text(self.x-20, self.y, text = depth, fill = 'white')
-        canvas.create_text(self.x+20, self.y, text = mass, fill = 'white')
-
+        canvas.create_text(self.x-20, self.y, text = depth, fill = 'white', tag = 'e')
+        canvas.create_text(self.x+20, self.y, text = mass, fill = 'white', tag = 'e')
+        if not com[0] == 0 and not com[1] == 0:
+            canvas.create_oval(com[0], com[1], max(5, com[0] + 40-10*len(depth)), max(5, com[1] + 40-10*len(depth)), fill='yellow', tag = 'e')
+            canvas.create_text(com[0], com[1]+45, text=com, fill='white', tag = 'e')
+            canvas.create_text(com[0], com[1]+30, text=depth, fill='white', tag = 'e')
 
 class QuadTree:
     def __init__(self, boundary, n, depth):
         self.boundary = boundary  # Rectangle
         self.capacity = n
-        self.points = []
+        self.points_ = []
         self.subdivided = False
         self.depth = depth
-        self.count = 0
-        self.com_x = 0
-        self.com_y = 0
+        self.com = (0,0)
         self.mass = 0
-        self.parent = None
+
+    @property
+    def points(self):
+        return self.points_
+    @points.setter
+    def points(self, updated_points):
+        self.points_ = updated_points
+        print('changed')
+        self.calculate_mass()
+        self.calculate_com()
 
     def subdivide(self):
+
         x = self.boundary.x
         y = self.boundary.y
         w = self.boundary.w
@@ -57,7 +68,6 @@ class QuadTree:
         self.topleft = QuadTree(tl, self.capacity, self.depth+'A')
         self.bottomleft = QuadTree(bl, self.capacity, self.depth+'C')
         self.bottomright = QuadTree(br, self.capacity, self.depth+'D')
-        self.topright.parent = self.topleft.parent = self.bottomleft.parent = self.bottomright.parent = self
         for i in range(len(self.points)):
             self.topright.insert(self.points[i])
             self.topleft.insert(self.points[i])
@@ -69,12 +79,15 @@ class QuadTree:
     def insert(self, point):
         if not self.boundary.contains(point):
             return False
+
         if len(self.points) < self.capacity:
-            self.points.append(point)
+            self.points += [point]
+
             return True
         else:
             if not self.subdivided:
                 self.subdivide()
+
             return (self.topright.insert(point) or
                     self.topleft.insert(point) or
                     self.bottomright.insert(point) or
@@ -94,28 +107,63 @@ class QuadTree:
             self.bottomleft.query(range, found_points)
         return found_points
 
-    # def calculate_mass(self):
-    #     #self.mass = len(self.query(self.boundary, []))
-    #     if self.subdivided:
-    #         trm = self.topright.mass = len(self.query(self.topright.boundary, []))
-    #         tlm = self.topleft.mass = len(self.query(self.topleft.boundary, []))
-    #         brm = self.bottomright.mass = len(self.query(self.bottomright.boundary, []))
-    #         blm = self.bottomleft.mass = len(self.query(self.bottomleft.boundary, []))
-    #         self.mass = trm+tlm+brm+blm
-    #     else:
-    #         print(self.points)
-    #         #self.mass = len(self.points)
-
-    def __len__(self):
-        mass = len(self.points)
+    #Must be called in order to return value of self.mass, else self.mass will be = 0
+    def calculate_mass(self):
+        self.mass = len(self.points)
         if self.subdivided:
-            mass = len(self.topright) + len(self.topleft) + len(self.bottomright) + len(self.bottomleft)
-        return mass
+            self.mass = self.topright.calculate_mass()+self.topleft.calculate_mass()+self.bottomright.calculate_mass()+self.bottomleft.calculate_mass()
+        if not self.mass == 0:
+            #print('mass:', self.mass)
+            return self.mass
+
+        else:
+            return 0
+
+    def calculate_com(self):
+        comx = comy = 0
+        for point in self.points:
+            comx += point.x * point.mass
+            comy += point.y * point.mass
+        if not self.mass == 0:
+            self.com = (comx//self.mass, comy//self.mass)
+            if self.subdivided:
+                # tr = self.topright.com = self.topright.calculate_com()
+                # tl = self.topleft.com = self.topleft.calculate_com()
+                # br = self.bottomright.com = self.bottomright.calculate_com()
+                # bl = self.bottomleft.com = self.bottomleft.calculate_com()
+                tr = self.topright.calculate_com()
+                tl = self.topleft.calculate_com()
+                br = self.bottomright.calculate_com()
+                bl = self.bottomleft.calculate_com()
+
+                self.com = ((tr[0]*self.topright.calculate_mass()
+                            + tl[0]*self.topleft.calculate_mass()
+                            + bl[0]*self.bottomleft.calculate_mass()
+                            + br[0]*self.bottomright.calculate_mass())//self.calculate_mass(),
+                            (tr[1]*self.topright.calculate_mass()
+                            + tl[1]*self.topleft.calculate_mass()
+                            + bl[1]*self.bottomleft.calculate_mass()
+                            + br[1]*self.bottomright.calculate_mass())//self.calculate_mass())
+                #print('subdiv com:',self.depth, self.com)
+                print(tr, tl, br, bl)
+
+                # print(self.calculate_mass(), tr, tl, br, bl, self.topright.mass, self.topleft.mass, self.bottomright.mass,self.bottomleft.mass)
+                # print(self.com)
+
+            print('com:', self.depth,  self.com)
+            return self.com
+        else:
+            return (0,0)
+
+    # def __len__(self):
+    #     mass = len(self.points)
+    #     if self.subdivided:
+    #         mass = len(self.topright) + len(self.topleft) + len(self.bottomright) + len(self.bottomleft)
+    #     return mass
 
 
     def display(self, canvas):
-        self.boundary.draw(canvas, self.depth, len(self))
-        #print(self.depth, self.points)
+        self.boundary.draw(canvas, self.depth, self.mass, self.com)
         if self.subdivided:
             self.topleft.display(canvas)
             self.topright.display(canvas)
