@@ -13,7 +13,7 @@ This is done by approximating force calculations to center of mass of quadrants 
 
 [~50k particles]
 
-Utilized algorithm is faster but at the cost of accuracy since some forces are ignored when particles are far enough.
+The utilized algorithm is faster but at the cost of accuracy since some forces are ignored when particles are far enough.
 
 
 ~ More info:
