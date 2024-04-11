@@ -9,9 +9,17 @@ This is done by approximating force calculations to center of mass of quadrants 
 ![300x300noise](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/1eda015b-3717-4d27-8632-f54b618c3374)
 
 
-![300x300noise](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/69106b9e-7ba2-4c39-98a9-a4e9f47b86f9)
+![300x300noise](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/69106b9e-7ba2-4c39-98a9-a4e9f47b86f9)  
 
 [~50k particles]
+
+
+
+The quadtree structure is rebuilt every frame to reduce computation, as seen below.
+
+![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/4ad7941c-eebf-46ae-8828-8fe9a3d9d957)
+
+
 
 The utilized algorithm is faster but at the cost of accuracy since some forces are ignored when particles are far enough.
 
