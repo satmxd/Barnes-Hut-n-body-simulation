@@ -12,7 +12,8 @@ As seen below, the quadtree structure is rebuilt in every frame to reduce comput
 
 [~50k particles]
 
-![300x300noise](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/1eda015b-3717-4d27-8632-f54b618c3374)                                
+![300x300noise](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/1eda015b-3717-4d27-8632-f54b618c3374)
+
 ![300x300noise-slow](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/cbcb032e-64d4-4ab4-a50e-264768a29cc2)
 
 
@@ -25,9 +26,11 @@ As seen below, the quadtree structure is rebuilt in every frame to reduce comput
 
 
 ~ Future improvements:
-OpenGL or CUDA can be used to improve the usage of GPU and increase performance by up to 10x using parallel computing/multithreads.
-The utilized algorithm is faster but at the cost of accuracy since some forces are ignored when particles are far enough.
-The use of Cython can be made to further increase the speed of calculations/quadtree construction.
+* OpenGL or CUDA can be used to improve the usage of GPU and increase performance by up to 10x using parallel computing/multithreads.
+  
+* The utilized algorithm is faster but at the cost of accuracy since some forces are ignored when particles are far enough.
+  
+* The use of Cython can be made to further increase the speed of calculations/quadtree construction.
 
 
 ~ More info:
