@@ -26,7 +26,7 @@ As seen below, the quadtree structure is rebuilt in every frame to reduce comput
 
 
 ~ Future improvements:
-* OpenGL or CUDA can be used to improve the usage of GPU and increase performance by up to 10x using parallel computing/multithreads.
+* OpenGL or CUDA can be used to increase the usage of GPU and improve performance by up to 10x using parallel computing/multithreading.
   
 * The utilized algorithm is faster but at the cost of accuracy since some forces are ignored when particles are far enough.
   
