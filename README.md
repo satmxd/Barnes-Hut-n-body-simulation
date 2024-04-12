@@ -11,6 +11,7 @@ As seen below, the quadtree structure is rebuilt in every frame to reduce comput
 ~ Gallery:
 
 [~50k particles]
+Simulation time: ~ 1.5hr
 
 ![300x300noise](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/1eda015b-3717-4d27-8632-f54b618c3374)
 
@@ -18,9 +19,19 @@ As seen below, the quadtree structure is rebuilt in every frame to reduce comput
 
 
 
-[~25k particles]
+Simulation time: ~20 mins
 
 ![300x300v2](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/81e5e48f-4475-4acf-8da5-8dc4a1bb150b)
+
+
+[~25k particles]
+
+Simulation time: ~1 hr
+
+![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/9cfc24c2-102f-46d1-8a3a-2cb70c218309)
+
+
+![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/04dd04d6-3b73-4bbe-ab8d-8d3e634251a6)
 
 
 
