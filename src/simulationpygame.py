@@ -34,25 +34,25 @@ colours = ["cyan",
 
 
 
-num_points = 1000
+num_points = 5000
 a = time.time()
 
 #doughnut
-# n = num_points
-#
-# circle_outer_radius = 190
-# circle_inner_radius = 110
-# points = []
-#
-# for _ in range(n):
-#     p = (random.uniform(-circle_outer_radius,circle_outer_radius), random.uniform(-circle_outer_radius,circle_outer_radius))
-#     if (p[0]**2+p[1]**2 <= circle_outer_radius**2) and (p[0]**2+p[1]**2 >= circle_inner_radius**2):
-#         points.append(Point(p[0]+width//2, p[1]+height//2))
+n = num_points
+
+circle_outer_radius = 200
+circle_inner_radius = 140
+points = []
+
+for _ in range(n):
+    p = (random.uniform(-circle_outer_radius,circle_outer_radius), random.uniform(-circle_outer_radius,circle_outer_radius))
+    if (p[0]**2+p[1]**2 <= circle_outer_radius**2) and (p[0]**2+p[1]**2 >= circle_inner_radius**2):
+        points.append(Point(p[0]+width//2, p[1]+height//2))
 
 
-gaussian = rd.normal(height//2, 100, size=(num_points, 2))
-points = list(Point(gaussian[i][0], gaussian[i][1]) for i in range(num_points))
-# gaussian2 = rd.normal(2* height / 3, 50, size=(num_points, 2))
+# gaussian = rd.normal(height//2, 50, size=(num_points, 2))
+# points = list(Point(gaussian[i][0], gaussian[i][1]) for i in range(num_points))
+# gaussian2 = rd.normal(2* height // 3, 50, size=(num_points, 2))
 # #
 # points += list(Point(gaussian2[i][0], gaussian2[i][1]) for i in range(num_points))
 
