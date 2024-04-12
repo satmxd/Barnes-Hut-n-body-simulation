@@ -1,0 +1,46 @@
+import math
+from random import uniform
+import pygame
+from config import *
+pygame.font.init()
+font = pygame.font.SysFont('Monospace', 12)
+
+class Point:
+    cached_images = {}
+    def __init__(self, x, y, m = 1, s = 1):
+        self.x = x
+        self.y = y
+        self.momentum = [0,0]
+        self.mass = m
+        self.size = s
+        self.quadrant = None
+        self.colordensity = None
+        self.color = (255,255,255)
+        #self.update_image()
+
+    def move(self):
+        self.x += round(uniform(-2,2),3)
+        self.y += round(uniform(-2,2),3)
+
+    def update_image(self):
+        cache_lookup = (self.size, self.color)
+
+        if not (cached_image := self.cached_images.get(cache_lookup, None)):
+            cached_image = pygame.Surface((2*self.size, 2* self.size))
+            cached_image.fill(self.color)
+
+            self.cached_images[cache_lookup] = cached_image
+
+        self.image = cached_image
+
+    def render(self, screen):
+        self.colordensity = min(int(self.quadrant.mass * 50 // (self.quadrant.boundary.w * 2)), 30)
+        pygame.draw.circle(screen, pygame.Color(colorrange[self.colordensity]), (self.x, self.y), self.size)
+        #cdf = font.render((str(self.colordensity)), 1, (0,255,0))
+        #screen.blit(cdf, (self.x, self.y+5))
+
+    def distance(self, pos):
+        try:
+            return math.sqrt((pos[0]-self.x)**2+(pos[1]-self.y)**2)
+        except:
+            pass
