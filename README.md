@@ -15,13 +15,11 @@ Simulation time: ~ 1.5hr
 
 ![300x300noise](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/1eda015b-3717-4d27-8632-f54b618c3374)
 
+![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/0d82ecc6-cd18-415d-bdf6-8fb36a6fb887)
+
 ![300x300noise-slow](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/cbcb032e-64d4-4ab4-a50e-264768a29cc2)
 
 
-
-Simulation time: ~20 mins
-
-![300x300v2](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/81e5e48f-4475-4acf-8da5-8dc4a1bb150b)
 
 
 [~25k particles]
