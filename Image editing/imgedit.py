@@ -4,7 +4,7 @@ import os
 
 from matplotlib import pyplot as plt
 
-dir = "D:\\Users\\Satvik\\Documents\\Data\\Entertainment\\Coding\\GIT\\Barnes-Hut-n-body-simulation\\src\\frames"
+dir = ".\\frames"
 i = 0
 for filename in os.scandir(dir):
     if filename.is_file():
