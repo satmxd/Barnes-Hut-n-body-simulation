@@ -49,7 +49,8 @@ Simulation time: ~1 hr
   
 * The utilized algorithm is faster but at the cost of accuracy since some forces are ignored when particles are far enough.
   
-* The use of Cython can be made to further increase the speed of calculations/quadtree construction.
+* Cython can be used to further increase the speed of calculations/quadtree construction.
+* Particle collision can be added to increase accuracy of simulation
 
 
 ~ More info:
