@@ -3,11 +3,11 @@ import seaborn as sb
 
 theta = 0.45
 G = 0.82
-dt = 9
+dt = 15
 floatcutoff = 0.01
 # r = sb.color_palette('mako', 29)
 # colorrange = r.as_hex()[2:]
-colorrange = ['#251729', '#2d1d38', '#332345', '#382a54', '#3c3162', '#403872', '#413f80', '#40498e', '#3d5296', '#395d9c', '#37669e', '#3671a0', '#357ba3', '#3484a5', '#348ea7', '#3497a9', '#35a1ab', '#38aaac', '#3eb4ad', '#45bdad', '#50c6ad', '#60ceac', '#79d6ae', '#91dbb4', '#a9e1bd', '#bbe7c8', '#ceeed7']
+colorrange = ['#3d0f71', '#4a1079', '#56147d', '#621980', '#6d1d81', '#792282', '#842681', '#912b81', '#9c2e7f', '#aa337d', '#b73779', '#c23b75', '#cf4070', '#d9466b', '#e44f64', '#ec5860', '#f3655c', '#f7725c', '#fa815f', '#fc8e64', '#fe9d6c', '#feaa74', '#feb97f', '#fec68a', '#fed597', '#fde2a3', '#fcf0b2']
 
 
 

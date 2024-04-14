@@ -24,21 +24,17 @@ class Rectangle:
                    range.x + range.w < self.x - self.w or
                    range.y - range.h > self.y + self.h or
                    range.y + range.h < self.y - self.h)
-    # def draw(self, canvas, depth, mass, com):
-    #     canvas.create_rectangle(self.x-self.w,self.y-self.h, self.x+self.w, self.y+self.h, outline = 'white' , width = 1)
-    #     canvas.create_text(self.x-20, self.y, text = depth, fill = 'white', tag = 'e')
-    #     canvas.create_text(self.x+20, self.y, text = mass, fill = 'white', tag = 'e')
-    #     if not com[0] == 0 and not com[1] == 0:
-    #         canvas.create_oval(com[0], com[1],com[0] +  max(0, 40-5*len(depth)),com[1] +  max(0, 40-5*len(depth)), fill='yellow', tag = 'e')
-    #         canvas.create_text(com[0], com[1]+45, text=com, fill='white', tag = 'e')
-    #         canvas.create_text(com[0], com[1]+30, text=depth, fill='white', tag = 'e')
-    def draw(self, screen,  mass, com, display_config = False):
+    def draw(self, screen,  mass, com, depth, display_config = True):
         if display_config:
             pygame.draw.rect(screen, (0,255,0), pygame.Rect(self.x-self.w, self.y-self.h, self.w*2, self.h*2), 1)
             mass_text = font.render(str(mass), False, (255,255,255))
             screen.blit(mass_text, (self.x, self.y))
+            d_text = font.render(f'depth: {depth}', False, (255, 255, 255))
+            screen.blit(d_text, (self.x, self.y+10))
             try:
                 pygame.draw.circle(screen, (255,0,0), (com[0], com[1]), 4)
+                com_text = font.render(f'com: {com}', False, (255, 255, 255))
+                screen.blit(com_text, (com[0], com[1]))
             except:
                 pass
 
@@ -173,7 +169,7 @@ class QuadTree:
 
 
     def display(self, screen):
-        self.boundary.draw(screen, self.mass, self.com)
+        self.boundary.draw(screen, self.mass, self.com, self.depth)
         list(p.render(screen) for p in self.points)
 
         #screen.blits([(p.image, (p.x, p.y)) for p in self.points])

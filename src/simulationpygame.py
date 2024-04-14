@@ -1,5 +1,3 @@
-import numpy as np
-
 from quadtreepygame import Point, Rectangle, QuadTree, return_nodes
 from config import *
 import random
@@ -12,7 +10,7 @@ flags = HWSURFACE | DOUBLEBUF
 
 
 start = time.time()
-width, height = 600, 600
+width, height = 600,600
 
 screen = pygame.display.set_mode((width, height), flags)
 screen.set_alpha(None)
@@ -34,24 +32,25 @@ colours = ["cyan",
 
 
 
-num_points = 5000
+num_points = 0
 a = time.time()
 
 #doughnut
-n = num_points
+# n = num_points
+#
+# circle_outer_radius = 200
+# circle_inner_radius = 140
+# points = []
+#
+# for _ in range(n):
+#     p = (random.uniform(-circle_outer_radius,circle_outer_radius), random.uniform(-circle_outer_radius,circle_outer_radius))
+#     if (p[0]**2+p[1]**2 <= circle_outer_radius**2) and (p[0]**2+p[1]**2 >= circle_inner_radius**2):
+#         points.append(Point(p[0]+width//2, p[1]+height//2))
 
-circle_outer_radius = 200
-circle_inner_radius = 140
-points = []
 
-for _ in range(n):
-    p = (random.uniform(-circle_outer_radius,circle_outer_radius), random.uniform(-circle_outer_radius,circle_outer_radius))
-    if (p[0]**2+p[1]**2 <= circle_outer_radius**2) and (p[0]**2+p[1]**2 >= circle_inner_radius**2):
-        points.append(Point(p[0]+width//2, p[1]+height//2))
-
-
-# gaussian = rd.normal(height//2, 50, size=(num_points, 2))
-# points = list(Point(gaussian[i][0], gaussian[i][1]) for i in range(num_points))
+gaussian = rd.normal(450, 150, size=(num_points, 2))
+points = list(Point(gaussian[i][0], gaussian[i][1]) for i in range(num_points))
+#points += [Point(450,450,500,4)]
 # gaussian2 = rd.normal(2* height // 3, 50, size=(num_points, 2))
 # #
 # points += list(Point(gaussian2[i][0], gaussian2[i][1]) for i in range(num_points))
@@ -78,6 +77,11 @@ while run == 'y':
             x, y = pygame.mouse.get_pos()
             point = Point(x, y)
             points.append(point)
+        if event.type == pygame.KEYDOWN:
+            if event.key == K_c:
+                pygame.image.save(screen, f"frames\\screenshot{i}.jpeg")
+                i += 1
+
 
 
 
@@ -86,28 +90,26 @@ while run == 'y':
     quadtree.mainloop()
     quadtree.display(screen)
     for point in points:
-        #point.move()
-
         if point.x > width or point.x < 0 or point.y > height or point.y < 0:
             points.remove(point)
         else:
             fx, fy = quadtree.calculate_force(point)
             point.momentum[0] += dt * fx
             point.momentum[1] += dt * fy
-            point.x += dt * point.momentum[0] * 0.1
-            point.y += dt * point.momentum[1] * 0.1
+            point.x += dt * (point.momentum[0]/point.mass) * 0.1
+            point.y += dt * (point.momentum[1]/point.mass) * 0.1
 
-    #lenpoints = font.render('Number of particles: ' + str(len(points)), 1, (0,255,0))
-    #lennodes = font.render('Number of nodes: ' + str(len(return_nodes())), 1, (0,255,0))
-    #screen.blit(lenpoints, (0, 0))
-    #screen.blit(lennodes, (0, 20))
-    pygame.image.save(screen, f"frames\\frame{i}.jpeg")
-    i+=1
+    lenpoints = font.render('Number of particles: ' + str(len(points)), 1, (0,255,0))
+    lennodes = font.render('Number of nodes: ' + str(len(return_nodes())), 1, (0,255,0))
+    screen.blit(lenpoints, (0, 0))
+    screen.blit(lennodes, (0, 20))
+    #pygame.image.save(screen, f"frames\\frame{i}.jpeg")
+
 
     pygame.display.flip()
     quadtree.clear()
     y = time.time()
-    print(y-x)
+    #print(y-x)
 pygame.quit()
 
 
