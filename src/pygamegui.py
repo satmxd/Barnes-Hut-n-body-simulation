@@ -89,7 +89,7 @@ while is_running:
     manager.draw_ui(window_surface)
     window_surface.blit(maintext, maintextrect)
     window_surface.blit(subtext, subtextrect)
-    window_surface.blit(imp, (0, 0))
+    #window_surface.blit(imp, (0, 0))
 
     vid.draw_to(window_surface,(window_surface.get_width()-vid.get_frame().get_width()-200, 150))
     vid2.draw_to(window_surface,(250, 300))
