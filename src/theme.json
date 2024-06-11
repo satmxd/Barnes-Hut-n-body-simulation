@@ -1,0 +1,70 @@
+{
+  "button":
+  {
+    "colours":
+    {
+      "normal_border": "#9ccddc",
+      "normal_bg": "#0b1f3a",
+      "hovered_bg": "#133769",
+      "hovered_border": "#ced7e0",
+      "normal_text": "#9ccddc",
+      "hovered_text": "#ced7e0"
+    },
+    "font":
+    {
+      "name": "Montserrat-Regular",
+      "size": "22",
+      "bold": "0"
+    },
+    "misc":
+    {
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10",
+      "border_width": "2"
+    }
+  },
+    "text_box":
+    {
+        "colours":
+        {
+            "link_text":"#c2dde4",
+            "link_hover":"#6094c4",
+            "regular_text": "#b8f0ff",
+            "dark_bg": "#000000",
+            "normal_border": "#000000"
+        },
+        "misc":
+        {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "10",
+            "border_width": "1",
+            "padding": "10,10",
+            "link_normal_underline": "0",
+            "link_hover_underline": "0"
+
+        }
+    },
+    "#green_theme":
+  {
+    "colours":
+    {
+      "normal_border": "#cbe58e",
+      "normal_bg": "#013026",
+      "hovered_bg": "#107e57",
+      "hovered_border": "#a1ce3f",
+      "normal_text": "#cbe58e"
+    },
+    "font":
+    {
+      "name": "candara",
+      "size": "22",
+      "bold": "0"
+    },
+    "misc":
+    {
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10",
+      "border_width": "2"
+    }
+  }
+}

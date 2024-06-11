@@ -24,7 +24,7 @@ class Rectangle:
                    range.x + range.w < self.x - self.w or
                    range.y - range.h > self.y + self.h or
                    range.y + range.h < self.y - self.h)
-    def draw(self, screen,  mass, com, depth, display_config = True):
+    def draw(self, screen,  mass, com, depth, display_config = False):
         if display_config:
             pygame.draw.rect(screen, (0,255,0), pygame.Rect(self.x-self.w, self.y-self.h, self.w*2, self.h*2), 1)
             mass_text = font.render(str(mass), False, (255,255,255))
@@ -201,8 +201,9 @@ class QuadTree:
                     fx, fy = 0.0,0.0
                     for node in self.children:
                         if node is not None:
-                            fx += node.calculate_force(particle)[0]
-                            fy += node.calculate_force(particle)[1]
+                            f = node.calculate_force(particle)
+                            fx += f[0]
+                            fy += f[1]
                     # pygame.draw.line(screen, (0, 0, 255), (particle.x, particle.y),
                     #                  (self.com[0], self.com[1]), 2)
                     return (fx, fy)

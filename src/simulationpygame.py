@@ -10,7 +10,7 @@ flags = HWSURFACE | DOUBLEBUF
 
 
 start = time.time()
-width, height = 600,600
+width, height = 800,800
 
 screen = pygame.display.set_mode((width, height), flags)
 screen.set_alpha(None)
@@ -32,7 +32,7 @@ colours = ["cyan",
 
 
 
-num_points = 0
+num_points = 2000
 a = time.time()
 
 #doughnut
@@ -48,7 +48,7 @@ a = time.time()
 #         points.append(Point(p[0]+width//2, p[1]+height//2))
 
 
-gaussian = rd.normal(450, 150, size=(num_points, 2))
+gaussian = rd.normal(height//2, 150, size=(num_points, 2))
 points = list(Point(gaussian[i][0], gaussian[i][1]) for i in range(num_points))
 #points += [Point(450,450,500,4)]
 # gaussian2 = rd.normal(2* height // 3, 50, size=(num_points, 2))
@@ -96,14 +96,15 @@ while run == 'y':
             fx, fy = quadtree.calculate_force(point)
             point.momentum[0] += dt * fx
             point.momentum[1] += dt * fy
-            point.x += dt * (point.momentum[0]/point.mass) * 0.1
-            point.y += dt * (point.momentum[1]/point.mass) * 0.1
+            point.x += dt * (point.momentum[0]/point.mass) * 0.4
+            point.y += dt * (point.momentum[1]/point.mass) * 0.4
 
-    lenpoints = font.render('Number of particles: ' + str(len(points)), 1, (0,255,0))
-    lennodes = font.render('Number of nodes: ' + str(len(return_nodes())), 1, (0,255,0))
-    screen.blit(lenpoints, (0, 0))
-    screen.blit(lennodes, (0, 20))
-    #pygame.image.save(screen, f"frames\\frame{i}.jpeg")
+    #lenpoints = font.render('Number of particles: ' + str(len(points)), 1, (0,255,0))
+    #lennodes = font.render('Number of nodes: ' + str(len(return_nodes())), 1, (0,255,0))
+    #screen.blit(lenpoints, (0, 0))
+    #screen.blit(lennodes, (0, 20))
+    pygame.image.save(screen, f"frames\\frame{i}.jpeg")
+    i+=1
 
 
     pygame.display.flip()
