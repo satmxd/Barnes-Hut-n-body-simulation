@@ -1,0 +1,1 @@
+{'show_quadtree': False, 'show_quadtree_depth': False, 'quadtree_thickness': 1.0, 'quadtree_color': [0.0, 0.0, 0.0, 255.0], 'background_color': [0.0, 0.0, 0.0, 255.0], 'show_config': False}

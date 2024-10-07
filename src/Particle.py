@@ -12,7 +12,7 @@ class Point:
         self.y = y
         self.momentum = [0,0]
         self.mass = m
-        self.size = s
+        self.size = self.mass
         self.quadrant = None
         self.colordensity = None
         self.color = (255,255,255)
@@ -34,12 +34,12 @@ class Point:
         self.image = cached_image
 
     def render(self, screen):
-        self.colordensity = min(int(self.quadrant.mass * 50 // (self.quadrant.boundary.w * 2)), 100)
-        colorindex = round(11 * math.log10(self.colordensity + 0.446) + 4, 4)
-        colorindex = (11 * math.log10(self.colordensity + 0.446) + 4)
-        pygame.draw.circle(screen, pygame.Color(colorrange[int(colorindex)]), (self.x, self.y), self.size)
+        # self.colordensity = min(int(self.quadrant.mass * 50 // (self.quadrant.boundary.w * 2)), 100)
+        # colorindex = round(11 * math.log10(self.colordensity + 0.446) + 4, 4)
+        # colorindex = (11 * math.log10(self.colordensity + 0.446) + 4)
+        # pygame.draw.circle(screen, pygame.Color(colorrange[int(colorindex)]), (self.x, self.y), self.size)
         #cdf = font.render((str(self.colordensity)), 1, (0,255,0))
-        #pygame.draw.circle(screen, (255,255,255), (self.x, self.y), self.size)
+        pygame.draw.circle(screen, (255,255,255), (self.x, self.y), self.size)
 
         #screen.blit(cdf, (self.x, self.y+5))
 

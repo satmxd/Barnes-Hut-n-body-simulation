@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from config import *
+import config
 
 import pygame
 from Particle import Point
@@ -24,17 +24,21 @@ class Rectangle:
                    range.x + range.w < self.x - self.w or
                    range.y - range.h > self.y + self.h or
                    range.y + range.h < self.y - self.h)
-    def draw(self, screen,  mass, com, depth, display_config = False):
-        if display_config:
-            pygame.draw.rect(screen, (0,255,0), pygame.Rect(self.x-self.w, self.y-self.h, self.w*2, self.h*2), 1)
-            mass_text = font.render(str(mass), False, (255,255,255))
-            screen.blit(mass_text, (self.x, self.y))
-            d_text = font.render(f'depth: {depth}', False, (255, 255, 255))
-            screen.blit(d_text, (self.x, self.y+10))
+    def draw(self, screen,  mass, com, depth):
+        # with open('config.txt', 'r') as file:
+        #     dat = file.readlines()
+        if config.show_config:
+            if config.show_quadtree:
+                pygame.draw.rect(screen, config.quadtree_color, pygame.Rect(self.x-self.w, self.y-self.h, self.w*2, self.h*2), config.quadtree_thickness)
+                if config.show_quadtree_depth and depth != '':
+                    d_text = font.render(f'depth: {depth}', False, (255, 255, 255))
+                    screen.blit(d_text, (self.x, self.y + 10))
+            #mass_text = font.render(str(mass), False, (255,255,255))
+            #screen.blit(mass_text, (self.x, self.y))
             try:
                 pygame.draw.circle(screen, (255,0,0), (com[0], com[1]), 4)
-                com_text = font.render(f'com: {com}', False, (255, 255, 255))
-                screen.blit(com_text, (com[0], com[1]))
+                #com_text = font.render(f'com: {com}', False, (255, 255, 255))
+                #screen.blit(com_text, (com[0], com[1]))
             except:
                 pass
 
@@ -192,11 +196,11 @@ class QuadTree:
             s = self.boundary.w*2
 
             d = np.sqrt((self.com[0]-particle.x)**2+(self.com[1]-particle.y)**2)
-            if d > floatcutoff:
-                if s < d*theta or self.children is None:
+            if d > config.floatcutoff:
+                if s < d*config.theta or self.children is None:
                     # pygame.draw.line(screen, (0, 255, 0), (particle.x, particle.y),
                     #                  (self.com[0], self.com[1]), 2)
-                    return force(particle.mass, particle.x, particle.y,d, self)
+                    return config.force(particle.mass, particle.x, particle.y,d, self)
                 else:
                     fx, fy = 0.0,0.0
                     for node in self.children:
