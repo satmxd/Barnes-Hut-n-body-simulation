@@ -1,5 +1,4 @@
 from random import randint, uniform, randrange
-from config import width, height
 import pygame
 from math import sqrt
 class Particle(pygame.sprite.Sprite):
@@ -44,9 +43,9 @@ class Particle(pygame.sprite.Sprite):
     def check_pos(self):
         if (
             self.pos[0] < -50 or
-            self.pos[0] > width + 50 or
+            self.pos[0] > 1200 + 50 or
             self.pos[1] < -50 or
-            self.pos[1] > height + 50
+            self.pos[1] > 800 + 50
         ):
             self.kill()
 

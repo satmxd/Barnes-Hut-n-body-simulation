@@ -8,27 +8,9 @@ import pygame
 from pygame.locals import *
 flags = HWSURFACE | DOUBLEBUF
 
-def load_gaussian(data, height, points):
-    num_points = data['num_of_particles']
-    gaussian = rd.normal(height//2, 150, size=(num_points, 2))
-    if data['override_sim']:
-        points = list(Point(gaussian[i][0], gaussian[i][1]) for i in range(num_points))
-    else:
-        points += list(Point(gaussian[i][0], gaussian[i][1]) for i in range(num_points))
-    data['should_load']=False
-    return points
 
 
-
-
-
-
-
-
-
-
-
-def main(shared_data):
+def main(in_q):
     
     # config = get_config()
     start = time.time()
@@ -73,9 +55,8 @@ def main(shared_data):
     #         points.append(Point(p[0]+width//2, p[1]+height//2))
 
 
-    # gaussian = rd.normal(height//2, 150, size=(num_points, 2))
-    # points = list(Point(gaussian[i][0], gaussian[i][1]) for i in range(num_points))
-    points = load_gaussian(shared_data, height, [])
+    gaussian = rd.normal(height//2, 150, size=(num_points, 2))
+    points = list(Point(gaussian[i][0], gaussian[i][1]) for i in range(num_points))
     #points += [Point(450,450,500,4)]
     # gaussian2 = rd.normal(2* height // 3, 50, size=(num_points, 2))
     # #
@@ -92,12 +73,12 @@ def main(shared_data):
     print('loading..')
     #time.sleep(3)
     while run == 'y':
-        config = shared_data
+        
         x = time.time()
         pygame.display.set_caption("QuadTree Fps: " + str(int(clock.get_fps())))
         clock.tick(60)
 
-        quadtree = QuadTree(rect, config['pthresh'], '')
+        quadtree = QuadTree(rect, 4, '')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -125,16 +106,16 @@ def main(shared_data):
 
 
 
+        config = in_q.get()
         list(map(quadtree.insert, points))
         screen.fill(config['background_color'])
-        
-        if config['should_load']:
-            if config['premade_sim_type'] == 'Gaussian':
-                points = load_gaussian(config, height, points)
+        configtext = font.render(str(config), 1, '#ffffff')
+        screen.blit(configtext, (0,height-40))
+
 
 
         quadtree.mainloop()
-        quadtree.display(screen, config)
+        quadtree.display(screen)
         for point in points:
             if point.x > width or point.x < 0 or point.y > height or point.y < 0:
                 points.remove(point)
@@ -144,7 +125,7 @@ def main(shared_data):
                 point.momentum[1] += config['dt'] * fy
                 point.x += config['dt'] * (point.momentum[0]/point.mass) * 0.4
                 point.y += config['dt'] * (point.momentum[1]/point.mass) * 0.4
-        if config['show_node_data'] and config['show_config']:
+        if config['show_node_data']:
             lenpoints = font.render('Number of particles: ' + str(len(points)), 1, config['secondary_color'])
             lennodes = font.render('Number of nodes: ' + str(len(return_nodes())), 1,  config['secondary_color'])
             pointinfo = font.render(f'{pygame.mouse.get_pos()}', 1,  config['secondary_color'])
@@ -157,6 +138,7 @@ def main(shared_data):
         if config['save_frames']:
             pygame.image.save(screen, f"frames\\frame{i}.jpeg")
         i+=1
+
 
         pygame.display.flip()
         quadtree.clear()

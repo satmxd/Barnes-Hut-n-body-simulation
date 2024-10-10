@@ -2,15 +2,14 @@ import os
 import subprocess
 from random import random, choice, randint, uniform, randrange
 import sys
-from turtle import back
 
 import pygame
 import pygame_gui
-from config import width, height
+
 import webbrowser
 from Menuparticle import Particle
 pygame.init()
-# width, height = 1200, 800
+width, height = 1200, 800
 pygame.display.set_caption('Main')
 window_surface = pygame.display.set_mode((width, height))
 
@@ -54,7 +53,7 @@ maintextrect.center = (window_surface.get_width()// 2, 50)
 subtextrect.center = (window_surface.get_width()// 2, 90)
 
 def start():
-    subprocess.run(["python", 'multithreadwindow.py'])
+    subprocess.run(["python", 'sharedmemory.py'])
 def saves():
     pass
 def options():

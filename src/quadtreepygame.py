@@ -2,12 +2,19 @@ import math
 
 import numpy as np
 
-import config
-
 import pygame
 from Particle import Point
 pygame.font.init()
 font = pygame.font.SysFont('Monospace', 12)
+
+# configdata = {}
+
+# def update_config():
+#     with open('config.txt', 'r') as file:
+#         configdata = eval(file.read())
+
+
+
 class Rectangle:
     def __init__(self, x, y, w, h):
         self.x = x
@@ -24,21 +31,30 @@ class Rectangle:
                    range.x + range.w < self.x - self.w or
                    range.y - range.h > self.y + self.h or
                    range.y + range.h < self.y - self.h)
-    def draw(self, screen,  mass, com, depth):
+    def draw(self, screen,  mass, com, depth, config):
+        #from config import show_config, show_centre_of_mass, show_node_data, show_quadtree,show_quadtree_depth, quadtree_color, quadtree_thickness
         # with open('config.txt', 'r') as file:
         #     dat = file.readlines()
-        if config.show_config:
-            if config.show_quadtree:
-                pygame.draw.rect(screen, config.quadtree_color, pygame.Rect(self.x-self.w, self.y-self.h, self.w*2, self.h*2), config.quadtree_thickness)
-                if config.show_quadtree_depth and depth != '':
+        #data = config.data
+        if config['show_config']:
+            if config['show_quadtree']:
+                pygame.draw.rect(screen, config['quadtree_color'], pygame.Rect(self.x-self.w, self.y-self.h, self.w*2, self.h*2),config['quadtree_thickness'])
+                if config['show_quadtree_depth'] and depth != '':
                     d_text = font.render(f'depth: {depth}', False, (255, 255, 255))
                     screen.blit(d_text, (self.x, self.y + 10))
+        # if config.show_config:
+        #     if config.show_quadtree:
+        #         pygame.draw.rect(screen, config.quadtree_color, pygame.Rect(self.x-self.w, self.y-self.h, self.w*2, self.h*2), config.quadtree_thickness)
+        #         if config.show_quadtree_depth and depth != '':
+        #             d_text = font.render(f'depth: {depth}', False, (255, 255, 255))
+        #             screen.blit(d_text, (self.x, self.y + 10))
             #mass_text = font.render(str(mass), False, (255,255,255))
             #screen.blit(mass_text, (self.x, self.y))
             try:
-                pygame.draw.circle(screen, (255,0,0), (com[0], com[1]), 4)
-                #com_text = font.render(f'com: {com}', False, (255, 255, 255))
-                #screen.blit(com_text, (com[0], com[1]))
+                if config['show_centre_of_mass']:
+                    pygame.draw.circle(screen, (255,0,0), (com[0], com[1]), 4)
+                    com_text = font.render(f'com: {com}', False, (255, 255, 255))
+                    screen.blit(com_text, (com[0], com[1]))
             except:
                 pass
 
@@ -172,22 +188,40 @@ class QuadTree:
     #     return mass
 
 
-    def display(self, screen):
-        self.boundary.draw(screen, self.mass, self.com, self.depth)
+    def display(self, screen, config):
+        self.boundary.draw(screen, self.mass, self.com, self.depth, config)
         list(p.render(screen) for p in self.points)
 
         #screen.blits([(p.image, (p.x, p.y)) for p in self.points])
         if self.subdivided:
-            self.topleft.display(screen)
-            self.topright.display(screen)
-            self.bottomleft.display(screen)
-            self.bottomright.display(screen)
+            self.topleft.display(screen, config)
+            self.topright.display(screen, config)
+            self.bottomleft.display(screen, config)
+            self.bottomright.display(screen, config)
             #print(f'tl: {len(self.topleft)},  tr: {len(self.topright)}, bl: {len(self.bottomleft)}, br: {len(self.bottomright)}')
 
-
+    def force(self, mass, x, y,d, body):
+        G = 0.766
+        damp = 0.2
+        floatcutoff = 0.001
+        #TODO: change G, damp, fcutoff back to config values
+        if d > floatcutoff:
+            f =  G*mass*body.mass*damp/(d*d)
+            dx = body.com[0] - x
+            dy = body.com[1] - y
+            angle = math.atan2(dy, dx)
+            fx = math.cos(angle) * f
+            fy = math.sin(angle) * f
+            #print(fx, fy, body.depth)
+            return (fx, fy)
+        else:
+            return (0,0)
 
 
     def calculate_force(self, particle, screen = None):
+            
+            theta = 0.35
+            floatcutoff = 0.001
             if self.mass == 0 or self.mass is None:
                 return (0,0)
             if self.com[0] == particle.x and self.com[1] == particle.y and self.mass == particle.mass:
@@ -196,11 +230,11 @@ class QuadTree:
             s = self.boundary.w*2
 
             d = np.sqrt((self.com[0]-particle.x)**2+(self.com[1]-particle.y)**2)
-            if d > config.floatcutoff:
-                if s < d*config.theta or self.children is None:
+            if d > floatcutoff:
+                if s < d*theta or self.children is None:
                     # pygame.draw.line(screen, (0, 255, 0), (particle.x, particle.y),
                     #                  (self.com[0], self.com[1]), 2)
-                    return config.force(particle.mass, particle.x, particle.y,d, self)
+                    return self.force(particle.mass, particle.x, particle.y,d, self)
                 else:
                     fx, fy = 0.0,0.0
                     for node in self.children:
