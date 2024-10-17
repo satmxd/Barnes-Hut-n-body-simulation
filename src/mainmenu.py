@@ -1,11 +1,11 @@
-import os
 import subprocess
-from random import random, choice, randint, uniform, randrange
-import sys
+from random import choice, randint, uniform, randrange
+from numpy import random as rd
+from numpy import array, sqrt, sum as npsum 
 
 import pygame
 import pygame_gui
-
+import os, sys
 import webbrowser
 from Menuparticle import Particle
 pygame.init()
@@ -53,7 +53,8 @@ maintextrect.center = (window_surface.get_width()// 2, 50)
 subtextrect.center = (window_surface.get_width()// 2, 90)
 
 def start():
-    subprocess.run(["python", 'sharedmemory.py'])
+    os.execv(sys.executable, [sys.executable, 'login.py'])
+
 def saves():
     pass
 def options():
@@ -64,17 +65,45 @@ def options():
 clock = pygame.time.Clock()
 is_running = True
 
-
+num_points=1700
 particle_group = pygame.sprite.Group()
 
 particles = []
 
+gaussian = array(rd.normal((width//2, height//2), 170, size=(num_points, 2)))
+dists = sqrt(npsum((gaussian[:]-array([[600,400]]*num_points))**2, axis=1))
+gaussian = [list(map(round, gaussian[i])) for i in range(num_points)  if dists[i] > 75]
+print(len(gaussian))
 particles += list(Particle(particle_group,
- (randrange(0,width),randrange(0,height)),
+ (gaussian[i][0], gaussian[i][1]),
   '#FFFFFF',
   (pygame.math.Vector2(uniform(-1,1),
   uniform(-1,1))).normalize(),
-  randint(1,25)) for i in range(800))
+  randint(1,25)) for i in range(len(gaussian)))
+
+particles += list(Particle(particle_group,
+ (randrange(0, width), randrange(0, height)),
+  '#FFFFFF',
+  (pygame.math.Vector2(uniform(-1,1),
+  uniform(-1,1))).normalize(),
+  randint(1,25)) for i in range(200))
+
+
+
+
+#############Centre Burst effect############
+# for i in range(200):
+#     pos = (width//2,height//2)
+#     color = choice(("red", "green", "blue"))
+#     direction = pygame.math.Vector2(uniform(-1, 1), uniform(-1, 1))
+#     direction = direction.normalize()
+#     speed = randint(50, 100)
+#     Particle(particle_group, pos, color, direction, speed)
+# for i in range(20):
+#     particle_group.update(0.004, width//2,height//2)
+############################################
+
+
 while is_running:
     time_delta = clock.tick()/1000.0
     events = pygame.event.get()
@@ -117,13 +146,15 @@ while is_running:
                     Particle(particle_group, pos, color, direction, speed)
 
         manager.update(time_delta)
+    
+    
+    
     window_surface.blit(background, (0, 0))
     manager.draw_ui(window_surface)
     window_surface.blit(maintext, maintextrect)
     window_surface.blit(subtext, subtextrect)
 
     #window_surface.blit(imp, (0, 0))
-
 
 
     pygame.display.flip()

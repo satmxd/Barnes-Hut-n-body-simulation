@@ -1,6 +1,68 @@
 from dataclasses import dataclass
 import dearpygui.dearpygui as dpg
 
+import mysql.connector
+
+database = mysql.connector.connect(
+host ="localhost",
+user ="root",
+passwd ="*SatvikMYSQL*",
+database="bhadb"
+)
+
+Cursor = database.cursor()
+Cursor.execute('CREATE DATABASE IF NOT EXISTS bhadb')
+
+#TODO- Update all data to database on clicking save button.
+#TODO- Create table with username if not exists
+
+
+def create_table():
+    username = data['username']
+    Cursor.execute(f"SHOW TABLES LIKE '{username}'")
+    if Cursor.fetchone():
+        print('Table exists, continuing...')
+    else:
+        print('Creating table')
+        Cursor.execute(f"CREATE TABLE IF NOT EXISTS {username} (load_id int PRIMARY KEY)")
+        for key, value in data.items():
+            try:
+                if type(value) in (tuple, list, str):
+                    Cursor.execute(f"""ALTER TABLE {username} ADD {key} varchar(25)""")
+                elif value == None:
+                    if key == 'save_time':
+                        Cursor.execute(f"""ALTER TABLE {username} ADD {key} datetime""")
+                else:
+                    Cursor.execute(f"""ALTER TABLE {username} ADD {key} {str(type(value))[8:].rstrip("'>")}""")
+            except Exception as e:
+                print(f'Error occured {e} at value: {key, value}')
+        # Cursor.execute("ALTER TABLE admin ADD save_name varchar(25) AFTER load_id")
+        # Cursor.execute("ALTER TABLE admin ADD save_time datetime AFTER load_id")
+        Cursor.execute(f"DESC {username}")
+        print(Cursor.fetchall())
+
+def save_sim():
+    create_table()
+    values = [round(i, 3) if type(i) == float else [round(j) for j in i] if type(i) == list else i for i in data.values()[3:]]
+    values = str([f"{i}" if type(i) in (tuple, str) else f"{tuple(i)}" if type(i) == list else i for i in values])
+    Cursor.execute(f"SELECT COUNT(*) FROM {data['username']}")
+    count = Cursor.fetchone()[0]
+    print(count)
+    load_id = count+1
+    try:
+        query = f'''INSERT INTO {data['username']} values ({load_id}, '{data['username']}', 'Save{load_id}', CURRENT_TIMESTAMP, {values.lstrip('[').rstrip(']')})'''
+        print(query)
+        Cursor.execute(query)
+        database.commit()
+        Cursor.execute(f"SELECT * FROM {data['username']}")
+        print(Cursor.fetchall())
+        print('Entry added...')
+    except Exception as e:
+        print(f'Error occured on entry: {e}')
+    
+
+
+
 
 def send_values():
     #print(sender, dpg.get_value(sender))
@@ -86,6 +148,8 @@ def main(shared_data):
         dpg.add_checkbox(label='Override current sim?', default_value=False, tag='override_sim')
         dpg.add_button(label = "Load simulation", callback=load_premade_sim)
 
+        dpg.add_button(label='Save simulation', callback=save_sim)
+
 
 
 
@@ -96,6 +160,9 @@ def main(shared_data):
         #print(shared_data)
         dpg.render_dearpygui_frame()
     dpg.destroy_context()
+
+
+
 
 # def init(shared_data):
 #     main()
