@@ -41,6 +41,8 @@ Simulation time: ~1 hr
 
 ![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/04dd04d6-3b73-4bbe-ab8d-8d3e634251a6)
 
+Simulation time: ~3hrs
+![300x300long](https://github.com/user-attachments/assets/d816c302-f37a-48e5-925b-0f8db95a324b)
 
 
 
