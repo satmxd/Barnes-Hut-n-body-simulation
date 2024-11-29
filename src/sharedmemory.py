@@ -1,4 +1,5 @@
 from multiprocessing import Process, Manager
+import threading
 
 import GUI
 import simulationpygame
@@ -13,6 +14,12 @@ database="bhauserdb"
 
 Cursor = database.cursor()
 
+def close_pool():
+    global pool
+    pool.close()
+    pool.terminate()
+    pool.join()
+
 if __name__ == '__main__':
     manager = Manager()
 
@@ -20,6 +27,7 @@ if __name__ == '__main__':
     d = {
     #savefile#
     'username' : 'null',
+    'sim_type' : 'null',
     'save_name' : 'null',
     'save_time' : None,
     #general#
@@ -53,18 +61,53 @@ if __name__ == '__main__':
     'quadtree_color': '#008000'
 }
     #name = input("Enter username: ")
-    Cursor.execute('SELECT username FROM users WHERE current = true')
-    names = Cursor.fetchall()[0]
-    print(names[0])
-    d['username'] = names[0]
+    # Cursor.execute('SELECT username FROM users WHERE current = true')
+    # names = Cursor.fetchall()[0]
+    # print(names[0])
+    username = None
+    try:
+        with open('currentuser.txt', 'r') as file:
+            d['username'] = file.read()
+            username = file.read()
+        with open('sim_callback.txt', 'r') as file:
+            d['sim_type'] = file.read()
 
-    Cursor.execute(f'''UPDATE USERS SET current = false WHERE username = "{names[0]}"''')
-    database.commit()
+
+    except Exception as e:
+        print('error: ', e)
+    try:
+        Cursor.execute(f'''UPDATE USERS SET current = false WHERE username = "{username }"''')
+        database.commit()
+    except:
+        pass
+
+    try:     
+        load_id = None  
+        with open('loadid.txt', 'r') as file:
+            load_id = file.read()
+            print('load_id: ',load_id)
+        if load_id != '':
+            Cursor.execute('USE BHADB')
+            Cursor.execute(f'''SELECT * FROM {d["username"]} WHERE LOAD_ID = {int(load_id)}''')
+            dat = Cursor.fetchall()
+            for i, key in enumerate(d):
+                x = dat[0][1+i]
+                print(key, x, type(x))
+                try:
+                    d[key] = eval(x)
+                except Exception as e:
+                    print('error: ',e)
+                    d[key] = x
+    except Exception as e:
+        print('Error', e)
     shared_data.update(d)
+    print(shared_data)
 
     p1 = Process(target=GUI.main, args=(shared_data,))
     p2 = Process(target=simulationpygame.main, args=(shared_data,))
     p1.start()
     p2.start()
+    
     p1.join()
     p2.join()
+

@@ -29,11 +29,14 @@ button_gap_w = 30
 button_height = 50
 button_width = 150
 
-buttons = {'startbtn': 'start','savebtn': 'saves','optnsbtn': 'options','exitbtn': 'exit'}
+buttons = {'startbtn': 'Start','savesbtn': 'Saves','gallerybtn': 'Gallery', 'exitbtn': 'Exit'}
+# buttons = {'startbtn': 'start','savesbtn': 'saves','optnsbtn': 'options','exitbtn': 'exit'}
+
 btns = []
 
 font32 = pygame.font.Font('data/fonts/Montserrat-Bold.ttf', 50)
 font22 = pygame.font.Font('data/fonts/Montserrat-Medium.ttf', 22)
+font18 = pygame.font.Font('data/fonts/Montserrat-Medium.ttf', 18)
 
 c = 0
 for i in buttons:
@@ -46,20 +49,32 @@ credits = pygame_gui.elements.UITextBox("<font face=candara size = 18 color = #c
 maintext = font32.render('Simulating Galaxies', True, '#ffffff')
 subtext = font22.render(' using the Barnes Hut algorithm', True, '#ffffff')
 
+user = None
+try:
+    with open('currentuser.txt', 'r') as file:
+        user = file.read()
+except Exception as e:
+    print(e)
+usertext = font18.render(f'Welcome {user}', True, '#bfbfbf')
+
 maintextrect = maintext.get_rect()
 subtextrect = subtext.get_rect()
+usertextrect = usertext.get_rect()
 # set the center of the rectangular object.
 maintextrect.center = (window_surface.get_width()// 2, 50)
 subtextrect.center = (window_surface.get_width()// 2, 90)
+usertextrect.midleft = (50, 50)
 
 def start():
-    os.execv(sys.executable, [sys.executable, 'login.py'])
+    os.execv(sys.executable, [sys.executable, 'loadmenu.py'])
 
 def saves():
-    pass
+    os.execv(sys.executable, [sys.executable, 'savesmenu.py'])
 def options():
     pass
 
+def gallery():
+    os.execv(sys.executable, [sys.executable, 'savesmenu.py'])
 
 
 clock = pygame.time.Clock()
@@ -123,6 +138,7 @@ while is_running:
             if event.ui_object_id == 'startbtn':
                 start()
             elif event.ui_object_id == 'savesbtn':
+                print('save btn pressed')
                 saves()
             elif event.ui_object_id == 'optionsbtn':
                 options()
@@ -153,6 +169,7 @@ while is_running:
     manager.draw_ui(window_surface)
     window_surface.blit(maintext, maintextrect)
     window_surface.blit(subtext, subtextrect)
+    window_surface.blit(usertext, usertextrect)
 
     #window_surface.blit(imp, (0, 0))
 

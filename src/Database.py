@@ -1,5 +1,4 @@
 from datetime import datetime
-from pickle import FALSE
 import mysql.connector
 
 database = mysql.connector.connect(

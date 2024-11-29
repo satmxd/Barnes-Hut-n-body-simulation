@@ -1,6 +1,7 @@
+from cgitb import text
 from dataclasses import dataclass
+from operator import pos
 import dearpygui.dearpygui as dpg
-
 import mysql.connector
 
 database = mysql.connector.connect(
@@ -26,6 +27,7 @@ def create_table():
         print('Creating table')
         Cursor.execute(f"CREATE TABLE IF NOT EXISTS {username} (load_id int PRIMARY KEY)")
         for key, value in data.items():
+            print(key, value)
             try:
                 if type(value) in (tuple, list, str):
                     Cursor.execute(f"""ALTER TABLE {username} ADD {key} varchar(25)""")
@@ -39,24 +41,25 @@ def create_table():
         # Cursor.execute("ALTER TABLE admin ADD save_name varchar(25) AFTER load_id")
         # Cursor.execute("ALTER TABLE admin ADD save_time datetime AFTER load_id")
         Cursor.execute(f"DESC {username}")
-        print(Cursor.fetchall())
+        print(f'struct: {Cursor.fetchall()}')
 
 def save_sim():
     create_table()
-    values = [round(i, 3) if type(i) == float else [round(j) for j in i] if type(i) == list else i for i in data.values()[3:]]
+    values = [round(i, 3) if type(i) == float else [round(j) for j in i] if type(i) == list else i for i in data.values()[4:]]
     values = str([f"{i}" if type(i) in (tuple, str) else f"{tuple(i)}" if type(i) == list else i for i in values])
     Cursor.execute(f"SELECT COUNT(*) FROM {data['username']}")
     count = Cursor.fetchone()[0]
     print(count)
     load_id = count+1
     try:
-        query = f'''INSERT INTO {data['username']} values ({load_id}, '{data['username']}', 'Save{load_id}', CURRENT_TIMESTAMP, {values.lstrip('[').rstrip(']')})'''
+        query = f'''INSERT INTO {data['username']} values ({load_id}, '{data['username']}','{data['sim_type']}', 'Save{load_id}', CURRENT_TIMESTAMP, {values.lstrip('[').rstrip(']')})'''
         print(query)
         Cursor.execute(query)
         database.commit()
         Cursor.execute(f"SELECT * FROM {data['username']}")
         print(Cursor.fetchall())
         print('Entry added...')
+        dpg.set_value('savedtext', 'Sim saved!')
     except Exception as e:
         print(f'Error occured on entry: {e}')
     
@@ -107,7 +110,7 @@ def main(shared_data):
     global data
     data = shared_data
     dpg.create_context()
-    dpg.create_viewport(title='Config', width=300, height=800, resizable=False)
+    dpg.create_viewport(title='Config', width=300, height=820, resizable=False, y_pos=0)
 
     #TODO: add rest of the options
     with dpg.window(label="General", width=300, height = 130, pos=(0,0), no_move=True, no_resize=True, no_close = True, no_collapse=True):
@@ -136,19 +139,20 @@ def main(shared_data):
         dpg.add_slider_int(label="Particle mass", width = 100,default_value=1, min_value=1,max_value=50, tag = 'pmass', callback=send_values)
 
 
-    with dpg.window(label="Saving/Loading", width=300, height = 275, pos=(0,500), no_move=True, no_resize=True, no_close = True, no_collapse=True):
+    with dpg.window(label="Saving/Loading", width=300, height = 290, pos=(0,500), no_move=True, no_resize=True, no_close = True, no_collapse=True):
         dpg.add_text("Click to save each frame as .png")
         dpg.add_text("Warning! Running long simulations")
         dpg.add_text("require much more memory!")
         dpg.add_checkbox(label="Save frames", tag = 'saveframes',default_value=False, callback = send_values)
 
         dpg.add_text("Load premade simulations: ")
-        dpg.add_combo(("Random", "Gaussian", "Doughnut"), default_value= "Gaussian", tag='premade_sim_type')
+        dpg.add_combo(("Random", "Gaussian", "Torus"), default_value= "Gaussian", tag='premade_sim_type')
         dpg.add_input_int(label='Number of particles', min_value=1, max_value=1000, tag = 'num_of_particles')
         dpg.add_checkbox(label='Override current sim?', default_value=False, tag='override_sim')
         dpg.add_button(label = "Load simulation", callback=load_premade_sim)
 
         dpg.add_button(label='Save simulation', callback=save_sim)
+        dpg.add_text('', tag = 'savedtext')
 
 
 
@@ -160,6 +164,7 @@ def main(shared_data):
         #print(shared_data)
         dpg.render_dearpygui_frame()
     dpg.destroy_context()
+    exit()
 
 
 

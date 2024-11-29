@@ -22,7 +22,7 @@ class Particle(pygame.sprite.Sprite):
 
     def create_surf(self):
         # self.image = pygame.Surface((self.size, self.size)).convert_alpha()
-        self.image = pygame.image.load('sprite.png').convert_alpha()
+        self.image = pygame.image.load('data\\imgs\\sprite.png').convert_alpha()
         self.image.set_alpha(self.alpha)
         self.image.set_colorkey("black")
         #pygame.draw.circle(surface=self.image, color=self.color, center=(self.size / 2, self.size / 2), radius=self.size / 2)
