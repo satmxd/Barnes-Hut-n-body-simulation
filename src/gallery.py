@@ -28,40 +28,23 @@ with dpg.texture_registry():
     colgauss01 = dpg.add_static_texture(width, height, data)
     width, height, channels, data = dpg.load_image("data/imgs/gallery/colring01.png")
     colring01 = dpg.add_static_texture(width, height, data)
+    width, height, channels, data = dpg.load_image("data/imgs/gallery/bwgausstilemap.png")
+    bwgausstilemap = dpg.add_static_texture(width, height, data)
+    width, height, channels, data = dpg.load_image("data/imgs/gallery/doublegausstilemap.png")
+    doublegausstilemap = dpg.add_static_texture(width, height, data)
+    width, height, channels, data = dpg.load_image("data/imgs/gallery/bwtorustilemap.png")
+    bwtorustilemap = dpg.add_static_texture(width, height, data)
+    width, height, channels, data = dpg.load_image("data/imgs/gallery/gausscoltilemap.png")
+    gausscoltilemap = dpg.add_static_texture(width, height, data)
+    width, height, channels, data = dpg.load_image("data/imgs/gallery/doublegausscoltilemap.png")
+    doublegausscoltilemap = dpg.add_static_texture(width, height, data)
+    width, height, channels, data = dpg.load_image("data/imgs/gallery/colringtilemap.png")
+    colringtilemap = dpg.add_static_texture(width, height, data)
     width, height, channels, data = dpg.load_image("data/imgs/backbtn.png")
     backbtn = dpg.add_static_texture(width, height, data)
 def home_page():
     os.execv(sys.executable, [sys.executable, 'mainmenu.py'])
 
-
-
-def start_gauss():
-    with open('sim_callback.txt', 'w') as file:
-        file.write('gauss')
-    os.execv(sys.executable, [sys.executable, 'sharedmemory.py'])
-
-def start_double_gauss():
-    with open('sim_callback.txt', 'w') as file:
-        file.write('double_gauss')
-    os.execv(sys.executable, [sys.executable, 'sharedmemory.py'])
-
-def start_torus():
-    with open('sim_callback.txt', 'w') as file:
-        file.write('torus')
-    os.execv(sys.executable, [sys.executable, 'sharedmemory.py'])
-
-def start_col_gauss():
-    with open('sim_callback.txt', 'w') as file:
-        file.write('col_gauss')
-    os.execv(sys.executable, [sys.executable, 'sharedmemory.py'])
-def start_random():
-    with open('sim_callback.txt', 'w') as file:
-        file.write('random')
-    os.execv(sys.executable, [sys.executable, 'sharedmemory.py'])
-def new_sim():
-    with open('sim_callback.txt', 'w') as file:
-        file.write('new_sim')
-    os.execv(sys.executable, [sys.executable, 'sharedmemory.py'])
 
 
 with dpg.window(label="Gallery page", tag = 'gallerypage', pos=(0, 0)):
@@ -78,19 +61,19 @@ with dpg.window(label="Gallery page", tag = 'gallerypage', pos=(0, 0)):
     dpg.add_spacer(width=50)
     dpg.add_same_line()
     gap = 50
-    dpg.add_image_button(bwgauss01, label = 'Single cluster', width = 200, height = 200, tag = 'gaussian', callback = start_gauss)
+    dpg.add_image_button(bwgauss01, label = 'Single cluster', width = 200, height = 200, tag = 'gaussian')
     dpg.add_same_line()
     dpg.add_spacer(width=gap)
     dpg.add_same_line()
-    dpg.add_image_button(bwdoublegauss01, label = 'Double cluster', width = 200, height = 200, tag = 'double_gauss', callback = start_double_gauss)
+    dpg.add_image_button(bwdoublegauss01, label = 'Double cluster', width = 200, height = 200, tag = 'double_gauss')
     dpg.add_same_line()
     dpg.add_spacer(width=gap)
     dpg.add_same_line()
-    dpg.add_image_button(bwtorus01, label = 'Ring cluster', width = 200, height = 200, tag = 'torus', callback = start_torus)
+    dpg.add_image_button(bwtorus01, label = 'Ring cluster', width = 200, height = 200, tag = 'torus')
     dpg.add_same_line()
     dpg.add_spacer(width=gap)
     dpg.add_same_line()
-    dpg.add_image_button(colgauss01, label = 'Heatmap cluster', width = 200, height = 200, tag = 'col_gauss', callback = start_col_gauss)
+    dpg.add_image_button(colgauss01, label = 'Heatmap cluster', width = 200, height = 200, tag = 'col_gauss')
     dpg.add_spacer(height=10)
     dpg.add_spacer(width=100)
     dpg.add_same_line()
@@ -110,11 +93,11 @@ with dpg.window(label="Gallery page", tag = 'gallerypage', pos=(0, 0)):
     dpg.add_spacer(height=25)
     dpg.add_spacer(width=gap)
     dpg.add_same_line()
-    dpg.add_image_button(coldoublegauss01, label = 'Heatmap double cluster', width = 200, height = 200, tag = 'col_gauss', callback = start_col_gauss)
+    dpg.add_image_button(coldoublegauss01, label = 'Heatmap double cluster', width = 200, height = 200, tag = 'col_double_gauss')
     dpg.add_same_line()
     dpg.add_spacer(width=gap)
     dpg.add_same_line()
-    dpg.add_image_button(colring01, label = 'Heatmap ring', width = 200, height = 200, tag = 'col_gauss', callback = start_col_gauss)
+    dpg.add_image_button(colring01, label = 'Heatmap ring', width = 200, height = 200, tag = 'col_ring')
     dpg.add_spacer(height=10)
     dpg.add_spacer(width=65)
     dpg.add_same_line()
@@ -130,6 +113,44 @@ with dpg.window(label="Gallery page", tag = 'gallerypage', pos=(0, 0)):
     #dpg.bind_item_font(gaussbtn,headingfont)
     # dpg.bind_item_font(logint,mediumfont)
     dpg.bind_item_font(ls,lf)
+
+    with dpg.tooltip("gaussian"):
+        dpg.add_text("Number of particles: ~50k")
+        dpg.add_text("Simulation time: ~30s/frame")
+        dpg.add_image(bwgausstilemap, width = 400, height = 400)
+    with dpg.tooltip("double_gauss"):
+        dpg.add_text("Number of particles: ~75k")
+        dpg.add_text("Simulation time: ~40s/frame")
+        dpg.add_image(doublegausstilemap, width = 400, height = 400)
+    with dpg.tooltip("torus"):
+        dpg.add_text("Number of particles: ~30k")
+        dpg.add_text("Simulation time: ~20s/frame")
+        dpg.add_image(bwtorustilemap, width = 400, height = 400)
+    with dpg.tooltip("col_gauss"):
+        dpg.add_text("Number of particles: ~50k")
+        dpg.add_text("Simulation time: ~10s/frame")
+        dpg.add_text("(Colors based on number density)")
+        dpg.add_colormap_button(label="", width=300,tag="plasmacm")
+        dpg.add_image(gausscoltilemap, width = 400, height = 400)
+    with dpg.tooltip("col_double_gauss"):
+        dpg.add_text("Number of particles: ~75k")
+        dpg.add_text("Simulation time: ~30s/frame")
+        dpg.add_text("(Colors based on number density)")
+        dpg.add_colormap_button(label="", width=300,tag="plasmacm2")
+        dpg.add_image(doublegausscoltilemap, width = 786, height = 200)
+    with dpg.tooltip("col_ring"):
+        dpg.add_text("Number of particles: ~75k")
+        dpg.add_text("Simulation time: ~40s/frame")
+        dpg.add_text("(Colors based on number density)")
+        dpg.add_colormap_button(label="", width=300,tag="viridiscm")
+        dpg.add_image(colringtilemap, width = 400, height = 400)
+
+    dpg.bind_colormap("plasmacm", dpg.mvPlotColormap_Hot)
+    dpg.bind_colormap("plasmacm2", dpg.mvPlotColormap_Hot)
+    dpg.bind_colormap("viridiscm", dpg.mvPlotColormap_Viridis)
+
+
+
 
 with dpg.theme() as global_theme:
 

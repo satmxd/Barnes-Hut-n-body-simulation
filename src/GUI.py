@@ -1,6 +1,3 @@
-from cgitb import text
-from dataclasses import dataclass
-from operator import pos
 import dearpygui.dearpygui as dpg
 import mysql.connector
 

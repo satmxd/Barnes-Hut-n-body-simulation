@@ -90,7 +90,7 @@ def redirect_to_sim(sender, app_data, user_data):
 
 #TODO COMPLETE DELETE FUNCTIONALITY
 def delete_entry():
-    pass
+    os.execv(sys.executable, [sys.executable, 'deletesavesmenu.py'])
 
 
 with dpg.window(label="Load page", tag = 'loadpage', pos=(0, 0)):
@@ -138,7 +138,7 @@ with dpg.window(label="Load page", tag = 'loadpage', pos=(0, 0)):
     dpg.add_spacer(width=495)
     dpg.add_same_line()
     if get_entry_count() > 0:
-        delbtn = dpg.add_button(label = "Delete Entry", callback = delete_entry)
+        delbtn = dpg.add_button(label = "Delete save", callback = delete_entry)
     
 
     ls = dpg.add_text("", tag="temp")

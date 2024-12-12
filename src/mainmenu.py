@@ -74,7 +74,7 @@ def options():
     pass
 
 def gallery():
-    os.execv(sys.executable, [sys.executable, 'savesmenu.py'])
+    os.execv(sys.executable, [sys.executable, 'gallery.py'])
 
 
 clock = pygame.time.Clock()
@@ -140,10 +140,11 @@ while is_running:
             elif event.ui_object_id == 'savesbtn':
                 print('save btn pressed')
                 saves()
-            elif event.ui_object_id == 'optionsbtn':
-                options()
+            elif event.ui_object_id == 'gallerybtn':
+                gallery()
+            
             elif event.ui_object_id == 'exitbtn':
-                exit()
+                sys.exit()
         if event.type == pygame_gui.UI_TEXT_BOX_LINK_CLICKED:
             if event.ui_element is credits:
                 webbrowser.open('https://github.com/satmxd')
