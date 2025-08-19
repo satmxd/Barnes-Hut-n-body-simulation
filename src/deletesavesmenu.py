@@ -13,7 +13,7 @@ import mysql.connector
 database = mysql.connector.connect(
 host ="localhost",
 user ="root",
-passwd ="*SatvikMYSQL*",
+passwd ="mysql",
 database="bhadb"
 )
 

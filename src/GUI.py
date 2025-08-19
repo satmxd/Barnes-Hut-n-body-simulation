@@ -4,8 +4,8 @@ import mysql.connector
 database = mysql.connector.connect(
 host ="localhost",
 user ="root",
-passwd ="*SatvikMYSQL*",
-database="bhadb"
+passwd ="mysql",
+database='bhadb'
 )
 
 Cursor = database.cursor()
@@ -61,7 +61,25 @@ def save_sim():
         print(f'Error occured on entry: {e}')
     
 
+def show_info(title, message):
 
+    # guarantee these commands happen in the same frame
+    with dpg.mutex():
+
+        viewport_width = dpg.get_viewport_client_width()
+        viewport_height = dpg.get_viewport_client_height()
+
+        with dpg.window(label=title, modal=True, no_close=True) as modal_id:
+            dpg.add_text(message)
+            dpg.add_button(label="Ok", width=75, user_data=(modal_id, False), callback=lambda: dpg.delete_item(modal_id))
+            # dpg.add_same_line()
+            # dpg.add_button(label="Cancel", width=75, user_data=(modal_id, False), callback=selection_callback)
+
+    # guarantee these commands happen in another frame
+    dpg.split_frame()
+    width = dpg.get_item_width(modal_id)
+    height = dpg.get_item_height(modal_id)
+    dpg.set_item_pos(modal_id, [viewport_width // 2 - width // 2, viewport_height // 2 - height // 2])
 
 
 def send_values():
@@ -69,6 +87,7 @@ def send_values():
     if data != None:
         data["show_quadtree"] = dpg.get_value('struct')
         data["show_quadtree_depth"] = dpg.get_value('depth')
+        data["show_particle_colours"] = dpg.get_value('particlecol')
         data["quadtree_thickness"] = round(dpg.get_value('thickness'), 3)
         data["quadtree_color"]= dpg.get_value('quadcol')
         data["background_color"] = dpg.get_value('bgcolor')
@@ -91,7 +110,12 @@ def send_values():
 
 def load_premade_sim():
     data['premade_sim_type']= dpg.get_value('premade_sim_type')
-    data['num_of_particles']= dpg.get_value('num_of_particles')
+    n = dpg.get_value('num_of_particles')
+    if n >= 0:
+        data['num_of_particles']= dpg.get_value('num_of_particles')
+    else:
+        show_info('Attention', 'Number of particles must\nbe greater than 0')
+        data['num_of_particles']= 0
     data['override_sim']=dpg.get_value('override_sim')
     data['should_load']=True
 
@@ -118,7 +142,7 @@ def main(shared_data):
         #dpg.add_button(label="Send data", tag='senddata',callback=send_values)
         #dpg.add_button(label="Load data", tag='loaddata',callback=load_values)
 
-    with dpg.window(label="Quadtree", width=300, height = 190, pos=(0,130), no_move=True, no_resize=True, no_close = True, no_collapse=True):
+    with dpg.window(label="Quadtree", width=300, height = 210, pos=(0,130), no_move=True, no_resize=True, no_close = True, no_collapse=True):
         dpg.add_text("Internal quadtree properties")
         dpg.add_checkbox(label="Quadtree structure", tag = 'struct',default_value=False, callback = send_values)
         dpg.add_checkbox(label="Quadtree depth", tag = 'depth',default_value=False, callback = send_values)
@@ -126,17 +150,17 @@ def main(shared_data):
         dpg.add_checkbox(label="Show centre of mass", tag = 'showcom',default_value=False, callback = send_values)
         dpg.add_slider_int(label="Line thickness", default_value=1, max_value=5,min_value=1, width=100, tag = 'thickness', callback = send_values)
         dpg.add_color_edit(label="Color", tag = 'quadcol',default_value=(0, 128, 0), callback=send_values, display_mode=dpg.mvColorEdit_rgb)
+        dpg.add_checkbox(label="Show particle colors", tag = 'particlecol',default_value=False, callback = send_values)
 
-    with dpg.window(label="Physics", width=300, height = 180, pos=(0,320), no_move=True, no_resize=True, no_close = True, no_collapse=True):
+    with dpg.window(label="Physics", width=300, height = 180, pos=(0,340), no_move=True, no_resize=True, no_close = True, no_collapse=True):
         dpg.add_text("Simulation settings")
         dpg.add_slider_float(label="Theta cutoff", default_value=0.35, max_value=1, width=100, tag = 'theta', callback = send_values)
-        dpg.add_input_float(label=" ", width = 100, tag = 'G',default_value=0.766,callback = send_values)
-        dpg.add_text("Gravitational constant G")
+        dpg.add_input_float(label="Gravitational constant", width = 100, tag = 'G',default_value=0.766,callback = send_values)
         dpg.add_slider_float(label="Dampening factor", default_value=0.2, max_value=1, width=100, tag = 'damp', callback = send_values)
         dpg.add_slider_int(label="Particle mass", width = 100,default_value=1, min_value=1,max_value=50, tag = 'pmass', callback=send_values)
 
 
-    with dpg.window(label="Saving/Loading", width=300, height = 290, pos=(0,500), no_move=True, no_resize=True, no_close = True, no_collapse=True):
+    with dpg.window(label="Saving/Loading", width=300, height = 290, pos=(0,520), no_move=True, no_resize=True, no_close = True, no_collapse=True):
         dpg.add_text("Click to save each frame as .png")
         dpg.add_text("Warning! Running long simulations")
         dpg.add_text("require much more memory!")

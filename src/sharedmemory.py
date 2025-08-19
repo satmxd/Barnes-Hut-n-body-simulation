@@ -8,7 +8,7 @@ import mysql.connector
 database = mysql.connector.connect(
 host ="localhost",
 user ="root",
-passwd ="*SatvikMYSQL*",
+passwd ="mysql",
 database="bhauserdb"
 )
 
@@ -58,7 +58,8 @@ if __name__ == '__main__':
     'show_quadtree_depth': False,
     'show_centre_of_mass': False,
     'quadtree_thickness': 1,
-    'quadtree_color': '#008000'
+    'quadtree_color': '#008000',
+    'show_particle_colours': False
 }
     #name = input("Enter username: ")
     # Cursor.execute('SELECT username FROM users WHERE current = true')

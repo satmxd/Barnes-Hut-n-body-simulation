@@ -13,8 +13,6 @@ font = pygame.font.SysFont('Monospace', 12)
 #     with open('config.txt', 'r') as file:
 #         configdata = eval(file.read())
 
-
-
 class Rectangle:
     def __init__(self, x, y, w, h):
         self.x = x
@@ -190,7 +188,7 @@ class QuadTree:
 
     def display(self, screen, config):
         self.boundary.draw(screen, self.mass, self.com, self.depth, config)
-        list(p.render(screen) for p in self.points)
+        list(p.render(screen, config['show_particle_colours']) for p in self.points)
 
         #screen.blits([(p.image, (p.x, p.y)) for p in self.points])
         if self.subdivided:

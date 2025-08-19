@@ -8,7 +8,7 @@ import mysql.connector
 database = mysql.connector.connect(
 host ="localhost",
 user ="root",
-passwd ="*SatvikMYSQL*",
+passwd ="mysql",
 database="bhauserdb"
 )
 
@@ -79,7 +79,7 @@ def register_callback(sender, app_data, user_data):
 
 
     if username in users:
-        dpg.set_value("login_status", "Username already exists. Please choose another.")
+        dpg.set_value("reg_status", "Username already exists. Please choose another.")
     # elif password != confirm_password:
     #     dpg.set_value("register_status", "Passwords do not match. Please try again.")
     elif all([username, password, password_confirm]):
@@ -124,7 +124,7 @@ def on_register_click():
 
 
 
-with dpg.window(label="Register", tag = 'registerpage', pos=(0, 0), no_resize=True, show = False, width=800, height=600, no_title_bar=True):
+with dpg.window(label="Register", tag = 'registerpage', pos=(0, 0), no_resize=True, no_move=True, show = False, width=800, height=600, no_title_bar=True):
     dpg.add_button(label=" < ", callback=lambda: dpg.configure_item("registerpage", show = False))
     dpg.add_spacer(height=50)
     dpg.add_spacer(width=175)

@@ -1,4 +1,3 @@
-from signal import signal
 from quadtreepygame import Point, Rectangle, QuadTree, return_nodes
 import random
 
@@ -34,19 +33,22 @@ def load_torus(n, width,height,data, inner_radius=160, outer_radius=240):
     return p2
 
 def double_gauss(height, n, shared_data):
-    gaussian = rd.normal(height//2, 150, size=(n, 2))
+    # gaussian = rd.normal(height//2, 150, size=(n, 2))
+    # points = list(Point(gaussian[i][0], gaussian[i][1]) for i in range(n))
+    # #points = load_gaussian(shared_data, height, [])
+    # #points += [Point(450,450,500,4)]
+    # gaussian2 = rd.normal(2* height // 3, 150, size=(n, 2))
+    # #
+    # points += list(Point(gaussian2[i][0], gaussian2[i][1]) for i in range(n))
+    gaussian = rd.normal(height//3, 50, size=(n, 2))
     points = list(Point(gaussian[i][0], gaussian[i][1]) for i in range(n))
-    points = load_gaussian(shared_data, height, [])
-    points += [Point(450,450,500,4)]
     gaussian2 = rd.normal(2* height // 3, 50, size=(n, 2))
     #
     points += list(Point(gaussian2[i][0], gaussian2[i][1]) for i in range(n))
 
-'''SUCCESS: The process "python.exe" with PID 10484 has been terminated.
-SUCCESS: The process "python.exe" with PID 13172 has been terminated.
-SUCCESS: The process "python.exe" with PID 17972 has been terminated.
-SUCCESS: The process "python.exe" with PID 15224 has been terminated.
-SUCCESS: The process "python.exe" with PID 3492 has been terminated.'''
+    return points
+
+
 def home_page():
     os.execv(sys.executable, [sys.executable, 'mainmenu.py'])
 
@@ -92,9 +94,10 @@ def main(shared_data):
     elif config['sim_type'] == 'torus':
         points = load_torus(200, width, height, config)
     elif config['sim_type'] == 'double_gauss':
-        pass
+        points += double_gauss(height, 200, config)
     elif config['sim_type'] == 'col_gauss':
-        pass
+        config['show_particle_colours'] = True
+        points = load_gaussian(config, height, points)
     elif config['sim_type'] == 'random':
         points = list(Point(random.randint(0, width), random.randint(0, height)) for i in range(100))
 
