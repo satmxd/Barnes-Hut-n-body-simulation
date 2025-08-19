@@ -41,18 +41,20 @@ Simulation time: ~1 hr
 
 ![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/04dd04d6-3b73-4bbe-ab8d-8d3e634251a6)
 
-Simulation time: ~3hrs
 
 ![300x300long](https://github.com/user-attachments/assets/d816c302-f37a-48e5-925b-0f8db95a324b)
 
 
 
 ~ Future improvements:
+* Biggest bottleneck is the programming language, switching to c/rust can improve performance by tenfold.
+
 * OpenGL or CUDA can be used to increase the usage of GPU and improve performance by up to 10x using parallel computing/multithreading.
   
 * The utilized algorithm is faster but at the cost of accuracy since some forces are ignored when particles are far enough.
   
 * Cython can be used to further increase the speed of calculations/quadtree construction.
+  
 * Particle collision can be added to increase accuracy of simulation
 
 
