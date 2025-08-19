@@ -1,8 +1,8 @@
 # Barnes-Hut-n-body-simulation
-n body simulation of large celestial objects [>50k particles] using Quadtrees and Barnes-hut algorithm
+n body simulation of large celestial objects [>50k particles] using Quadtrees and Barnes-hut algorithm implemented in Python
 
 *How it works-*
-Barnes hut algorithm uses quadtrees to reduce the time complexity of n-body problem from  O(n^2) to O(nlogn). 
+Barnes hut algorithm uses quadtrees to reduce the time complexity of n-body problem from  O(n^2) to O(n*log(n)). 
 This is done by approximating force calculations to the center of mass of quadrants far enough from a particle rather than brute force NxN calculations.
 As seen below, the quadtree structure is rebuilt in every frame to reduce computation.
 
