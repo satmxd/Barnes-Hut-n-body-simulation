@@ -21,28 +21,25 @@ COM for every quadrant is calculated and the ratio width / distance is taken as 
 ~ Gallery:
 
 [~50k particles]
-Simulation time: ~ 1.5hr
+Simulation time: ~ 1hr
 
-![300x300noise](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/1eda015b-3717-4d27-8632-f54b618c3374)
-
-![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/0d82ecc6-cd18-415d-bdf6-8fb36a6fb887)
-
-![300x300noise-slow](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/cbcb032e-64d4-4ab4-a50e-264768a29cc2)
-
+![300x300noise](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/1eda015b-3717-4d27-8632-f54b618c3374)    ![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/0d82ecc6-cd18-415d-bdf6-8fb36a6fb887)    ![300x300noise-slow](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/cbcb032e-64d4-4ab4-a50e-264768a29cc2)
 
 
 
 [~25k particles]
 
-Simulation time: ~1 hr
+Simulation time: ~0.5 hr
 
-![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/9cfc24c2-102f-46d1-8a3a-2cb70c218309)
-
-
-![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/04dd04d6-3b73-4bbe-ab8d-8d3e634251a6)
+![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/9cfc24c2-102f-46d1-8a3a-2cb70c218309)     ![300x300](https://github.com/satmxd/Barnes-Hut-n-body-simulation/assets/122893966/04dd04d6-3b73-4bbe-ab8d-8d3e634251a6)     ![300x300long](https://github.com/user-attachments/assets/d816c302-f37a-48e5-925b-0f8db95a324b)
 
 
-![300x300long](https://github.com/user-attachments/assets/d816c302-f37a-48e5-925b-0f8db95a324b)
+
+[Stills]
+
+<img width="300" height="300" alt="comb" src="https://github.com/user-attachments/assets/5fc78602-0be4-4e16-8381-221bf77b3606" />     <img width="315" height="315" alt="gausscoltilemap" src="https://github.com/user-attachments/assets/dd04ad93-f8f4-431b-b8df-a45c4ae0cfdc" />    <img width = "310" height = "310" alt="doublecol" src="https://github.com/user-attachments/assets/1d0a55a3-03c5-4b4a-833d-77d8c3127666"/>
+
+
 
 
 
