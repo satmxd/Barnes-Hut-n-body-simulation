@@ -1,5 +1,7 @@
-# Barnes-Hut-n-body-simulation
+# Barnes-Hut-n-body-simulation [Interactive GUI with user-saves]
 n body simulation of large celestial objects [>50k particles] using Quadtrees and Barnes-hut algorithm implemented in Python
+
+>Added GUI with dearpygui and mysql
 
 *How it works-*
 Barnes hut algorithm uses quadtrees to reduce the time complexity of n-body problem from  O(n^2) to O(n*log(n)). 
@@ -19,6 +21,16 @@ COM for every quadrant is calculated and the ratio width / distance is taken as 
 
 
 ~ Gallery:
+
+[Updated GUI]
+
+<img width = "598" height = "397" alt="mainmenu" src="https://github.com/user-attachments/assets/d148276f-a34f-4fdf-ada2-c92ea0cf915b"/>
+
+>Interactive particle simulation
+
+<img width="563" height="426" alt="image" src="https://github.com/user-attachments/assets/938efff1-e730-4f21-9cb3-821bf8d11647" /> <img width="563" height="426" alt="image1" src="https://github.com/user-attachments/assets/78337d9f-b5b2-446d-ae00-cb8b06ac6bea" />
+
+
 
 [~50k particles]
 Simulation time: ~ 1hr
