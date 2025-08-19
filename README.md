@@ -68,4 +68,4 @@ Simulation time: ~0.5 hr
 
 
 ~ More info:
-https://www.cs.princeton.edu/courses/archive/fall03/cs126/assignments/barnes-hut.html
+https://arborjs.org/docs/barnes-hut
